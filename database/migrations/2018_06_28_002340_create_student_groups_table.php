@@ -16,6 +16,8 @@ class CreateStudentGroupsTable extends Migration
         Schema::create('student_groups', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->string('description');
+            $table->unsignedInteger('max_students');
             $table->unsignedInteger('user_id');
             $table->timestamps();
         });

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\{
+    Http\Resources\StudentGroupResource, StudentGroup
+};
 
 class StudentGroupController extends Controller
 {
@@ -11,9 +14,14 @@ class StudentGroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct() {
+        $this->middleware('auth:api')->except(['index', 'show']);
+    }
+
     public function index()
     {
-
+        return StudentGroupResource::collection(StudentGroup::paginate(25));
     }
 
     /**
@@ -24,18 +32,26 @@ class StudentGroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $studentGroup = StudentGroup::create([
+            'user_id' => auth()->user()->id,
+            'name' => $request->get('name'),
+            'description' => $request->get('description'),
+            'max_students' => $request->get('max_students')
+        ]);
+
+        return new StudentGroupResource($studentGroup);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param StudentGroup $group
+     * @return StudentGroupResource
      */
-    public function show($id)
+    public function show(StudentGroup $group)
     {
-        //
+        return new StudentGroupResource($group);
     }
 
     /**
@@ -53,11 +69,14 @@ class StudentGroupController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param StudentGroup $studentGroup
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(StudentGroup $studentGroup)
     {
-        //
+        $studentGroup->delete();
+
+        return response()->json(null, 204);
     }
 }
