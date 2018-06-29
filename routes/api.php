@@ -16,6 +16,6 @@ Route::post('register', 'AuthController@register');
 Route::post('login', 'AuthController@login');
 
 // Books
-Route::apiResource('books', 'BookController');
+Route::apiResource('books', 'StudentGroupController');
 // Ratings
 Route::post('books/{book}/ratings', 'RatingController@store')->middleware('auth:api');
