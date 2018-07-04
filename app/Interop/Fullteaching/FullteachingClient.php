@@ -8,17 +8,23 @@
 
 namespace App\Interop\Fullteaching;
 
+use App\Interop\ClientInterface;
 use App\Interop\Fullteaching\Helper\Cookie;
 use App\User;
 use RestClient;
 
-class FullteachingClient
+class FullteachingClient extends ClientInterface
 {
-    private static $httpClient;
+    private static $httpClient = null;
 
     public function __construct()
     {
-        FullteachingClient::$httpClient = new RestClient([
+    }
+
+    private static function getHttpClient(){
+        return self::$httpClient ?
+            self::$httpClient :
+            self::$httpClient =  new RestClient([
             'base_url' => 'https://localhost:5000',
             'format' => 'json',
             'curl_options' => [
@@ -36,8 +42,8 @@ class FullteachingClient
     public static function login($username, $password)
     {
 
-        $data = FullteachingClient::$httpClient->get('api-logIn', [], [
-            'Authorization' => 'Basic ' . base64_encode($username . ':' . $password)
+        $data = self::getHttpClient()->get('api-logIn', [], [
+            'Authorization' => 'Basic ' . base64_encode("{$username}:{$password}")
         ]);
 
         if ($data->info->http_code != 200)
@@ -46,15 +52,12 @@ class FullteachingClient
         $user_data = json_decode($data->response);
 
         $user = User::firstOrCreate([
-                'provider' => 'fullteaching',
-                'external_id' => $user_data->id
+            'provider' => 'fullteaching',
+            'external_id' => $user_data->id
         ]);
 
-        if($data->headers->set_cookie)
-        {
-            $raw_cookie = $data->headers->set_cookie;
-            $cookie = explode('=', $raw_cookie)[1];
-            $cookie = explode(';', $cookie)[0];
+        if ($data->headers->set_cookie) {
+            $cookie = explode(';', explode('=', $data->headers->set_cookie)[1])[0];
 
             $user->external_token = $cookie;
         }
@@ -63,6 +66,5 @@ class FullteachingClient
         $user->name = $user_data->nickName;
 
         return $user;
-
     }
 }
