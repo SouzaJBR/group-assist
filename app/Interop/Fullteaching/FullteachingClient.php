@@ -17,21 +17,17 @@ class FullteachingClient extends ClientInterface
 {
     private static $httpClient = null;
 
-    public function __construct()
+    private static function getHttpClient()
     {
-    }
-
-    private static function getHttpClient(){
-        return self::$httpClient ?
-            self::$httpClient :
-            self::$httpClient =  new RestClient([
-            'base_url' => 'https://localhost:5000',
-            'format' => 'json',
-            'curl_options' => [
-                CURLOPT_SSL_VERIFYPEER => 0,
-                CURLOPT_SSL_VERIFYHOST => 0
-            ]
-        ]);
+        return self::$httpClient ? self::$httpClient :
+            self::$httpClient = new RestClient([
+                'base_url' => 'https://localhost:5000',
+                'format' => 'json',
+                'curl_options' => [
+                    CURLOPT_SSL_VERIFYPEER => 0,
+                    CURLOPT_SSL_VERIFYHOST => 0
+                ]
+            ]);
     }
 
     /**
