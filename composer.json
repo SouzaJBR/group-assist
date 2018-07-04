@@ -53,6 +53,12 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover"
+        ],
+        "start": [
+            "@php artisan serve"
+        ],
+        "test": [
+            "echo 'Script de teste não definido!'"
         ]
     },
     "config": {
