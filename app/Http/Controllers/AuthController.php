@@ -2,29 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Interop\Fullteaching\FullteachingClient;
 use Illuminate\Http\Request;
 use App\User;
 
 class AuthController extends Controller
 {
-    /**
-     * Register a new user.
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function register(Request $request)
-    {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
-
-        $token = auth()->login($user);
-
-        return $this->respondWithToken($token);
-    }
+//    /**
+//     * Register a new user.
+//     *
+//     * @param Request $request
+//     * @return \Illuminate\Http\JsonResponse
+//     */
+//    public function register(Request $request)
+//    {
+//        $user = User::create([
+//            'name' => $request->name,
+//            'email' => $request->email,
+//            'password' => bcrypt($request->password),
+//        ]);
+//
+//        $token = auth()->login($user);
+//
+//        return $this->respondWithToken($token);
+//    }
 
     /**
      * Get a JWT via given credentials.
@@ -34,11 +35,15 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $credentials = $request->only(['email', 'password']);
+        $credentials = $request->only(['email', 'password', 'provider']);
+        
+        $user = FullteachingClient::login($credentials['email'], $credentials['password']);
 
-        if (!$token = auth()->attempt($credentials)) {
+        if (!$user) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+
+        $token = auth()->login($user);
 
         return $this->respondWithToken($token);
     }

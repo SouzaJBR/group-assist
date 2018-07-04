@@ -15,7 +15,8 @@ class StudentGroupController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:api')->except(['index', 'show']);
     }
 
@@ -27,11 +28,17 @@ class StudentGroupController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'required',
+            'max_students' => 'required|integer'
+        ]);
 
         $studentGroup = StudentGroup::create([
             'user_id' => auth()->user()->id,
@@ -57,13 +64,25 @@ class StudentGroupController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request $request
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, StudentGroup $group)
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'required',
+            'max_students' => 'required|integer'
+        ]);
+
+        $group->name = $request->get('name');
+        $group->description = $request->get('description');
+        $group->max_students = $request->get('max_students');
+
+        $group->save();
+
+        return response()->json(['success' => true, 'message' => 'Dados atualizados com sucesso']);
     }
 
     /**
@@ -77,6 +96,6 @@ class StudentGroupController extends Controller
     {
         $studentGroup->delete();
 
-        return response()->json(null, 204);
+        return response()->json(['success' => true, 'message' => 'Dado removido com sucesso'], 204);
     }
 }
