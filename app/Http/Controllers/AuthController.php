@@ -8,24 +8,6 @@ use App\User;
 
 class AuthController extends Controller
 {
-//    /**
-//     * Register a new user.
-//     *
-//     * @param Request $request
-//     * @return \Illuminate\Http\JsonResponse
-//     */
-//    public function register(Request $request)
-//    {
-//        $user = User::create([
-//            'name' => $request->name,
-//            'email' => $request->email,
-//            'password' => bcrypt($request->password),
-//        ]);
-//
-//        $token = auth()->login($user);
-//
-//        return $this->respondWithToken($token);
-//    }
 
     /**
      * Get a JWT via given credentials.
@@ -36,7 +18,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only(['email', 'password', 'provider']);
-        
+
         $user = FullteachingClient::login($credentials['email'], $credentials['password']);
 
         if (!$user) {
@@ -48,6 +30,11 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
+    public function logout(Request $request) {
+        auth()->logout();
+
+        return response()->json(['success' => true, 'message' => 'Session invalidated']);
+    }
     /**
      * Get the token array structure.
      *

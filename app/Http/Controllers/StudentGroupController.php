@@ -22,7 +22,12 @@ class StudentGroupController extends Controller
 
     public function index()
     {
-        return StudentGroupResource::collection(StudentGroup::paginate(25));
+//        user_temp('teste', 'asd');
+
+        return user_temp('teste');
+
+//        return auth()->user();
+        //return StudentGroupResource::collection(StudentGroup::paginate(25));
     }
 
     /**

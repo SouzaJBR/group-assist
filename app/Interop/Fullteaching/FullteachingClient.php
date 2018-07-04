@@ -8,7 +8,6 @@
 
 namespace App\Interop\Fullteaching;
 
-use App\Interop\Fullteaching\Helper\Cookie;
 use App\User;
 use RestClient;
 
@@ -35,6 +34,9 @@ class FullteachingClient
      */
     public static function login($username, $password)
     {
+
+        if(FullteachingClient::$httpClient == null)
+            new FullteachingClient();
 
         $data = FullteachingClient::$httpClient->get('api-logIn', [], [
             'Authorization' => 'Basic ' . base64_encode($username . ':' . $password)
