@@ -9,7 +9,6 @@
 namespace App\Interop\Fullteaching;
 
 use App\Interop\ClientInterface;
-use App\Interop\Fullteaching\Helper\Cookie;
 use App\User;
 use RestClient;
 
@@ -65,5 +64,6 @@ class FullteachingClient extends ClientInterface
         $user->name = $user_data->nickName;
 
         return $user;
+
     }
 }

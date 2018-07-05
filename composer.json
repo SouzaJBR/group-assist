@@ -66,6 +66,9 @@
         "sort-packages": true,
         "optimize-autoloader": true
     },
+    "files": [
+        "app\\Helper\\session_helper.php"
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true
 }
