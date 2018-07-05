@@ -17,6 +17,9 @@ class FullteachingClient extends ClientInterface
 {
     private static $httpClient = null;
 
+    /**
+     * @return RestClient
+     */
     private static function getHttpClient()
     {
         return self::$httpClient ? self::$httpClient :
