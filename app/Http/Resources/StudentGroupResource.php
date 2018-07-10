@@ -21,7 +21,7 @@ class StudentGroupResource extends JsonResource
             'max_students' => $this->max_students,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
-            'user' => $this->user
+            'owner' => $this->owner
         ];
     }
 }

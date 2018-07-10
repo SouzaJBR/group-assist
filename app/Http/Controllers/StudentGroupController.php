@@ -22,12 +22,7 @@ class StudentGroupController extends Controller
 
     public function index()
     {
-//        user_temp('teste', 'asd');
-
-        return user_temp('teste');
-
-//        return auth()->user();
-        //return StudentGroupResource::collection(StudentGroup::paginate(25));
+        return StudentGroupResource::collection(StudentGroup::paginate(25));
     }
 
     /**
@@ -103,4 +98,5 @@ class StudentGroupController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Dado removido com sucesso'], 204);
     }
+    
 }

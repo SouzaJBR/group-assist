@@ -6,9 +6,16 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+/**
+ * @property mixed external_id
+ */
 class User extends Authenticatable implements JWTSubject
 {
     use  Notifiable;
+
+    public function groups() {
+        return $this->belongsToMany(StudentGroup::class);
+    }
 
     /**
      * The attributes that are mass assignable.

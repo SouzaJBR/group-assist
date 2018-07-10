@@ -6,9 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class StudentGroup extends Model
 {
-    protected $fillable = ['user_id', 'max_students', 'description',  'name'];
+    protected $fillable = ['group_manager_id','user_id', 'max_students', 'description',  'name'];
 
-    public function user() {
-        return $this->belongsTo(User::class);
+    public function owner() {
+        return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function members() {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function manager() {
+        return $this->belongsTo(GroupManager::class, 'group_manager_id');
+    }
+
 }

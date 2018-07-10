@@ -9,7 +9,7 @@
 namespace App\Interop;
 
 
-abstract class ClientInterface
+interface ClientInterface
 {
-    abstract protected static function login($username, $password);
+    static function login($username, $password);
 }

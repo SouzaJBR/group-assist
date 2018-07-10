@@ -12,7 +12,7 @@ use App\Interop\ClientInterface;
 use App\User;
 use RestClient;
 
-class FullteachingClient extends ClientInterface
+class FullteachingClient implements ClientInterface
 {
     private static $httpClient = null;
 
@@ -65,5 +65,27 @@ class FullteachingClient extends ClientInterface
 
         return $user;
 
+    }
+
+    public static function getUserCourses(User $user) {
+        $data = self::getHttpClient()->get('api-courses/user/'.$user->external_id, [],
+            [
+                'Cookie' => 'JSESSIONID='.$user->external_token
+            ]);
+
+        if($data->info->http_code != 200)
+            return null;
+
+        return json_decode($data->response);
+
+    }
+
+    public static function getCourseInfo($courseId) {
+        $data = self::getHttpClient()->get('api-courses/course/'.$courseId);
+
+        if($data->info->http_code != 200)
+            return null;
+
+        return json_decode($data->response);
     }
 }
