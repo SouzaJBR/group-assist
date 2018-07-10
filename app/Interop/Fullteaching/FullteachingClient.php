@@ -40,7 +40,7 @@ class FullteachingClient implements ClientInterface
     public static function login($username, $password)
     {
 
-        $data = self::getHttpClient()->get('api-login', [], [
+        $data = self::getHttpClient()->get('api-logIn', [], [
             'Authorization' => 'Basic ' . base64_encode("{$username}:{$password}")
         ]);
 
