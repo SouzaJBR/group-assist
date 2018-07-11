@@ -23,7 +23,7 @@ class FullteachingClient implements ClientInterface
     {
         return self::$httpClient ? self::$httpClient :
             self::$httpClient = new RestClient([
-                'base_url' => 'https://localhost:5000',
+                'base_url' => env('FULLTEACHING_URL', 'https://localhost:5000'),
                 'format' => 'json',
                 'curl_options' => [
                     CURLOPT_SSL_VERIFYPEER => 0,

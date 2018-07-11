@@ -28,4 +28,15 @@ class GroupMembersController extends Controller
         $user = auth()->user();
         $user->groups()->attach($group->id);
     }
+
+    public function leave(Request $request){
+        $request->validate([
+            'group' => 'required|exists:student_groups'
+        ]);
+
+        if(auth()->user()->groups()->detach($request->get('group')))
+            return response()->json(['success' => true, 'message' => 'You leaved the group']);
+        else
+            return response()->json(['success' => false, 'message' => 'Group not found']);
+    }
 }

@@ -24,6 +24,10 @@ class GroupManagerController extends Controller
         return GroupManager::all();
     }
 
+    public function courses(Request $request, GroupManager $manager) {
+        return $manager->courses;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -38,14 +42,17 @@ class GroupManagerController extends Controller
             'id_course' => 'required|number',
         ]);
 
-       $manager = GroupManager::create([
+        if(!auth()->user()->hasRole('teacher'))
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+
+       GroupManager::create([
           'name' => $request->get('owner'),
           'description' => $request->get('description'),
           'id_course' => $request->get('id_course'),
           'id_owner' => auth()->user()->id
        ]);
 
-       return $manager;
+       return response()->json(['success' => true, 'message' => 'Group manager created with success']);
     }
 
     /**
@@ -75,10 +82,12 @@ class GroupManagerController extends Controller
      * Remove the specified resource from storage.
      *
      * @param GroupManager $manager
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
      */
     public function destroy(GroupManager $manager)
     {
-        $manager->destroy();
+        $manager->delete();
+        return response()->json(['success' => true, 'Group manager deleted with success']);
     }
 }

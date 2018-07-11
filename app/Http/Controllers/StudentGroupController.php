@@ -25,6 +25,11 @@ class StudentGroupController extends Controller
         return StudentGroupResource::collection(StudentGroup::paginate(25));
     }
 
+    public function getGroupsByManager(Request $request, $id) {
+
+        return StudentGroupResource::collection(StudentGroup::all()->where('group_manager_id', '=', $id));
+    }
+
     /**
      * Store a newly created resource in storage.
      *

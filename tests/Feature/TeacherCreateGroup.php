@@ -23,8 +23,6 @@ class TeacherCreateGroup extends TestCase
         $userStudent = FullteachingClient::login('student1@gmail.com', 'pass');
         $courses = FullteachingClient::getUserCourses($userTeacher);
 
-        //$this->assertFalse(true);
-
         $course = $courses[0];
 
         $manager = GroupManager::create([

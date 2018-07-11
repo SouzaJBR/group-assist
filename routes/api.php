@@ -12,10 +12,16 @@
 |
 */
 
-Route::post('register', 'AuthController@register');
+//Route::post('register', 'AuthController@register');
 Route::post('login', 'AuthController@login');
 Route::get('logout', 'AuthController@logout');
 
-Route::apiResource('groups', 'StudentGroupController');
+Route::get('courses/{course}/managers', 'CourseController@managers');
 
-Route::get('join', 'GroupMembersController@join');
+Route::get('managers/{manager}/groups', 'GroupManagerController@courses');
+Route::delete('managers/{manager}', 'GroupManagerController@destroy');
+Route::post('managers', 'GroupManagerController@store');
+
+Route::get('groups/{group}', 'StudentGroupController@show');
+Route::delete('groups/{group', 'StudentGroupController@destroy');
+Route::post('groups', 'StudentGroupController@store');
