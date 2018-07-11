@@ -17,3 +17,5 @@ Route::post('login', 'AuthController@login');
 Route::get('logout', 'AuthController@logout');
 
 Route::apiResource('groups', 'StudentGroupController');
+
+Route::get('join', 'GroupMembersController@join');

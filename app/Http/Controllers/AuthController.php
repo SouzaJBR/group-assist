@@ -27,7 +27,7 @@ class AuthController extends Controller
 
         $token = auth()->login($user);
 
-        user_temp('token', $user->external_token);
+        //user_temp('token', $user->external_token);
 
         return $this->respondWithToken($token);
     }

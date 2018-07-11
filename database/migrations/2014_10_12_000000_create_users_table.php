@@ -15,8 +15,11 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('email')->nullable();
+            $table->string('name')->nullable();
             $table->unsignedInteger('external_id');
             $table->enum('provider', ['fullteaching']);
+            $table->string('external_token')->nullable();
             $table->timestamps();
         });
     }

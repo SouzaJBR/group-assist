@@ -32,6 +32,13 @@ class FullteachingClient implements ClientInterface
             ]);
     }
 
+    protected static function getRoleId($role) {
+        return [
+            'ROLE_TEACHER' => 1,
+            'ROLE_STUDENT' => 2
+        ][$role];
+    }
+
     /**
      * @param $username
      * @param $password
@@ -54,14 +61,20 @@ class FullteachingClient implements ClientInterface
             'external_id' => $user_data->id
         ]);
 
+        //Se tem que atualizar a sessão, então atualiza os dados do usuário
         if ($data->headers->set_cookie) {
             $cookie = explode(';', explode('=', $data->headers->set_cookie)[1])[0];
 
             $user->external_token = $cookie;
-        }
+            $user->email = $user_data->name;
+            $user->name = $user_data->nickName;
 
-        $user->email = $user_data->name;
-        $user->name = $user_data->nickName;
+            foreach($user_data->roles as $role) {
+                $user->attachRole([self::getRoleId($role)]);
+            }
+
+            $user->save();
+        }
 
         return $user;
 
@@ -80,8 +93,11 @@ class FullteachingClient implements ClientInterface
 
     }
 
-    public static function getCourseInfo($courseId) {
-        $data = self::getHttpClient()->get('api-courses/course/'.$courseId);
+    public static function getCourseInfo($token, $courseId) {
+        $data = self::getHttpClient()->get('api-courses/course/'.$courseId, [],
+            [
+                'Cookie' => 'JSESSIONID='.$token
+            ]);
 
         if($data->info->http_code != 200)
             return null;
