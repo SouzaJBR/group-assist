@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Interop\Fullteaching\FullteachingClient;
 use App\StudentGroup;
 use Illuminate\Http\Request;
 
@@ -12,29 +13,28 @@ class GroupMembersController extends Controller
         $this->middleware('auth:api');
     }
 
-    public function join(Request $request)
+    public function join(Request $request, StudentGroup $group)
     {
-
-        $request->validate([
-           'group' => 'required|exists:student_groups'
-        ]);
-
-        $group = StudentGroup::find($request->get('group'));
-
-        //TODO validar se o usuário não está em um grupo
-        //TODO validar se o usuário possui permissão para ingressar
-        //TODO validar se o grupo não excede o máximo de integrantes
-
         $user = auth()->user();
-        $user->groups()->attach($group->id);
+
+        if(!$user->hasRole('student'))
+            return response()->json(['success' => false, 'message' => 'You are not allowed to join in a group'], 403);
+
+        if($group->max_members <= $group->members->count())
+            return response()->json(['success' => false, 'message' => 'This group is full'], 400);
+
+        if(!in_array($group->manager->id_course, array_column(FullteachingClient::getUserCourses(auth()->user()), 'id')))
+            return response()->json(['success' => false, 'message' => 'You are not enrolled this course'], 403);
+
+
+        $user->groups()->attach($group->id, ['group_manager_id' => $group->manager->id]);
+
+        return response()->json(['success' => true, 'message' => 'You joined the group']);
     }
 
-    public function leave(Request $request){
-        $request->validate([
-            'group' => 'required|exists:student_groups'
-        ]);
+    public function leave(Request $request, StudentGroup $group){
 
-        if(auth()->user()->groups()->detach($request->get('group')))
+        if(auth()->user()->groups()->detach($group->id))
             return response()->json(['success' => true, 'message' => 'You leaved the group']);
         else
             return response()->json(['success' => false, 'message' => 'Group not found']);

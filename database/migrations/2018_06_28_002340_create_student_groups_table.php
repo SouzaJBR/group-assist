@@ -18,7 +18,7 @@ class CreateStudentGroupsTable extends Migration
             $table->unsignedInteger('group_manager_id');
             $table->string('name');
             $table->string('description');
-            $table->unsignedInteger('max_students');
+            $table->unsignedInteger('max_members');
             $table->unsignedInteger('user_id');
             $table->timestamps();
         });

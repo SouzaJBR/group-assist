@@ -24,8 +24,8 @@ class GroupManagerController extends Controller
         return GroupManager::all();
     }
 
-    public function courses(Request $request, GroupManager $manager) {
-        return $manager->courses;
+    public function groups(Request $request, GroupManager $manager) {
+        return $manager->groups;
     }
 
     /**

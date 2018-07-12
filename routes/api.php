@@ -16,12 +16,16 @@
 Route::post('login', 'AuthController@login');
 Route::get('logout', 'AuthController@logout');
 
+Route::get('courses', 'CourseController@index');
 Route::get('courses/{course}/managers', 'CourseController@managers');
 
-Route::get('managers/{manager}/groups', 'GroupManagerController@courses');
+Route::get('managers/{manager}/groups', 'GroupManagerController@groups');
+Route::get('managers/{manager}', 'GroupManagerController@show');
 Route::delete('managers/{manager}', 'GroupManagerController@destroy');
 Route::post('managers', 'GroupManagerController@store');
 
 Route::get('groups/{group}', 'StudentGroupController@show');
+Route::get('groups/{group}/join', 'GroupMembersController@join');
+Route::get('groups/{group}/leave', 'GroupMembersController@leave');
 Route::delete('groups/{group', 'StudentGroupController@destroy');
 Route::post('groups', 'StudentGroupController@store');

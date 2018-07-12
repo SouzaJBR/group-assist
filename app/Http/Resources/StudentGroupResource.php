@@ -9,7 +9,7 @@ class StudentGroupResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
@@ -18,10 +18,11 @@ class StudentGroupResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'max_students' => $this->max_students,
-            'created_at' => (string) $this->created_at,
-            'updated_at' => (string) $this->updated_at,
-            'owner' => $this->owner
+            'max_students' => $this->max_members,
+            'created_at' => (string)$this->created_at,
+            'updated_at' => (string)$this->updated_at,
+            'owner' => UserResource::make($this->owner),
+            'members' => StudentGroupMemberResource::collection($this->members)
         ];
     }
 }

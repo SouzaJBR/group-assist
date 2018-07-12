@@ -4,9 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property integer max_members
+ */
 class StudentGroup extends Model
 {
-    protected $fillable = ['group_manager_id','user_id', 'max_students', 'description',  'name'];
+    protected $fillable = ['group_manager_id','user_id', 'max_members', 'description',  'name'];
 
     public function owner() {
         return $this->belongsTo(User::class, 'user_id');
