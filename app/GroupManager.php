@@ -4,6 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property string name
+ * @property string description
+ */
 class GroupManager extends Model
 {
 

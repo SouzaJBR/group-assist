@@ -10,7 +10,7 @@ class GroupManagerController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api')->except(['index', 'show']);
+        $this->middleware('auth:api');
     }
 
     /**
@@ -18,11 +18,6 @@ class GroupManagerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //TODO criar resource para ele
-        return GroupManager::all();
-    }
 
     public function groups(Request $request, GroupManager $manager) {
         return $manager->groups;
@@ -58,8 +53,8 @@ class GroupManagerController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param GroupManager $manager
+     * @return GroupManager
      */
     public function show(GroupManager $manager)
     {
@@ -69,13 +64,21 @@ class GroupManagerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request $request
+     * @param GroupManager $manager
+     * @return mixed
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, GroupManager $manager)
     {
-        //TODO implementar função de atualização
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required'
+            ]);
+
+        $manager->name = $request->get('name');
+        $manager->description = $request->get('description');
+
+        return response()->json(['success' => true, 'message' => 'Manager updated successfully']);
     }
 
     /**
