@@ -1,6 +1,8 @@
 # group-assist
 Ferramenta para gerencimento de grupos de alunos desenvolvido para a disciplina de Teste de Software
 
+[![Build Status](https://travis-ci.org/capybara-team/group-assist-api.svg?branch=develop)](https://travis-ci.org/capybara-team/group-assist-api)
+
 ## Desenvolvimento
 
 1. Clonar o repositório
