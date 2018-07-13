@@ -14,8 +14,7 @@
 
 //Route::post('register', 'AuthController@register');
 
-Route::middleware(['cors'])->group(function () {
-    Route::options('{any?}', function () {return response('OK');});
+//Route::middleware(['cors'])->group(function () {
 
     Route::post('login', 'AuthController@login');
     Route::get('logout', 'AuthController@logout');
@@ -35,4 +34,4 @@ Route::middleware(['cors'])->group(function () {
     Route::post('groups', 'StudentGroupController@store');
 
     Route::get('/user', 'UserController@index');
-});
+//});
