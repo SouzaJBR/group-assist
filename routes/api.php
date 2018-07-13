@@ -31,4 +31,6 @@ Route::middleware(['cors'])->group(function () {
     Route::put('groups/{group}/leave', 'GroupMembersController@leave');
     Route::delete('groups/{group}', 'StudentGroupController@destroy');
     Route::post('groups', 'StudentGroupController@store');
+
+    Route::get('/user', 'UserController@index');
 });
