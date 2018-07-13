@@ -17,19 +17,26 @@ class GroupMembersController extends Controller
     {
         $user = auth()->user();
 
-        if(!$user->hasRole('student'))
-            return response()->json(['success' => false, 'message' => 'You are not allowed to join in a group'], 403);
+        $result = $group->join($user);
 
-        if($group->max_members <= $group->members->count())
-            return response()->json(['success' => false, 'message' => 'This group is full'], 400);
+        switch ($result) {
+            case 0:
+                return response()->json(['success' => true, 'message' => 'You joined the group']);
+                break;
+            case 1:
+                return response()->json(['success' => false, 'message' => 'You are not allowed to join in a group', 'code' => 1], 403);
+                break;
+            case 2:
+                return response()->json(['success' => false, 'message' => 'This group is full', 'code' => 2], 400);
+                break;
+            case 3:
+                return response()->json(['success' => false, 'message' => 'You are not enrolled this course', 'code' => 3], 403);
+                break;
+            case 4:
+                return response()->json(['success' => false, 'message' => 'You are already on a group', 'code' => 4], 403);
+                break;
+        }
 
-        if(!in_array($group->manager->id_course, array_column(FullteachingClient::getUserCourses(auth()->user()), 'id')))
-            return response()->json(['success' => false, 'message' => 'You are not enrolled this course'], 403);
-
-
-        $user->groups()->attach($group->id, ['group_manager_id' => $group->manager->id]);
-
-        return response()->json(['success' => true, 'message' => 'You joined the group']);
     }
 
     public function leave(Request $request, StudentGroup $group){
