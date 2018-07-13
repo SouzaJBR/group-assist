@@ -15,6 +15,8 @@
 //Route::post('register', 'AuthController@register');
 
 Route::middleware(['cors'])->group(function () {
+    Route::options('{any?}', function () {return response('OK');});
+
     Route::post('login', 'AuthController@login');
     Route::get('logout', 'AuthController@logout');
 
