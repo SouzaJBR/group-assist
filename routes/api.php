@@ -25,7 +25,7 @@ Route::delete('managers/{manager}', 'GroupManagerController@destroy');
 Route::post('managers', 'GroupManagerController@store');
 
 Route::get('groups/{group}', 'StudentGroupController@show');
-Route::get('groups/{group}/join', 'GroupMembersController@join');
-Route::get('groups/{group}/leave', 'GroupMembersController@leave');
-Route::delete('groups/{group', 'StudentGroupController@destroy');
+Route::put('groups/{group}/join', 'GroupMembersController@join');
+Route::put('groups/{group}/leave', 'GroupMembersController@leave');
+Route::delete('groups/{group}', 'StudentGroupController@destroy');
 Route::post('groups', 'StudentGroupController@store');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Interop\Fullteaching\FullteachingClient;
 use Illuminate\Http\Request;
 use App\User;
@@ -29,7 +30,7 @@ class AuthController extends Controller
 
         //user_temp('token', $user->external_token);
 
-        return $this->respondWithToken($token);
+        return $this->respondWithToken($token, $user);
     }
 
     public function logout(Request $request) {
@@ -44,12 +45,13 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token)
+    protected function respondWithToken($token, $user)
     {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60,
+            'user' => UserResource::make($user)
         ]);
     }
 }

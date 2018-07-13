@@ -15,8 +15,18 @@ class CourseController extends Controller
 
     public function index() {
         //TODO criar recurso para esse cara aqui
+        $courses = FullteachingClient::getUserCourses(auth()->user());
 
-        return FullteachingClient::getUserCourses(auth()->user());
+        $response = array();
+
+        foreach ($courses as $course) {
+            $response[] = (object) [
+                'id' => $course->id,
+                'title' => $course->title,
+                'image' => $course->imag
+            ];
+        }
+        return $response;
     }
 
     public function managers(Request $request, $course) {
