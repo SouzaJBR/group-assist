@@ -23,7 +23,7 @@ class CourseController extends Controller
             $response[] = (object) [
                 'id' => $course->id,
                 'title' => $course->title,
-                'image' => $course->imag
+                'image' => $course->image
             ];
         }
         return $response;
