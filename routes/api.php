@@ -13,19 +13,22 @@
 */
 
 //Route::post('register', 'AuthController@register');
-Route::post('login', 'AuthController@login');
-Route::get('logout', 'AuthController@logout');
 
-Route::get('courses', 'CourseController@index');
-Route::get('courses/{course}/managers', 'CourseController@managers');
+Route::middleware(['cors'])->group(function () {
+    Route::post('login', 'AuthController@login');
+    Route::get('logout', 'AuthController@logout');
 
-Route::get('managers/{manager}/groups', 'GroupManagerController@groups');
-Route::get('managers/{manager}', 'GroupManagerController@show');
-Route::delete('managers/{manager}', 'GroupManagerController@destroy');
-Route::post('managers', 'GroupManagerController@store');
+    Route::get('courses', 'CourseController@index');
+    Route::get('courses/{course}/managers', 'CourseController@managers');
 
-Route::get('groups/{group}', 'StudentGroupController@show');
-Route::put('groups/{group}/join', 'GroupMembersController@join');
-Route::put('groups/{group}/leave', 'GroupMembersController@leave');
-Route::delete('groups/{group}', 'StudentGroupController@destroy');
-Route::post('groups', 'StudentGroupController@store');
+    Route::get('managers/{manager}/groups', 'GroupManagerController@groups');
+    Route::get('managers/{manager}', 'GroupManagerController@show');
+    Route::delete('managers/{manager}', 'GroupManagerController@destroy');
+    Route::post('managers', 'GroupManagerController@store');
+
+    Route::get('groups/{group}', 'StudentGroupController@show');
+    Route::put('groups/{group}/join', 'GroupMembersController@join');
+    Route::put('groups/{group}/leave', 'GroupMembersController@leave');
+    Route::delete('groups/{group}', 'StudentGroupController@destroy');
+    Route::post('groups', 'StudentGroupController@store');
+});
